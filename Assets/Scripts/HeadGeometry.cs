@@ -15,7 +15,6 @@ public class HeadGeometry : MonoBehaviour {
 
 		if (Pick ()) {
 			if (Input.GetMouseButtonDown (0) ) {
-
 				head.Hold ();
 			}
 

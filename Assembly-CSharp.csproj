@@ -49,6 +49,7 @@
      <Compile Include="Assets\Scripts\Head.cs" />
      <Compile Include="Assets\Scripts\HeadGeometry.cs" />
      <Compile Include="Assets\Scripts\KeyManager.cs" />
+     <Compile Include="Assets\Scripts\Soldier.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

@@ -3,6 +3,9 @@ using System.Collections;
 
 public class Head : MonoBehaviour {
 
+	public enum EatingState { WAITING, LOWERING, EATING, RAISING };
+	protected EatingState eatingState = EatingState.WAITING;
+
 	public GameObject parent;
 	public HeadGeometry geometry;
 	
@@ -18,8 +21,13 @@ public class Head : MonoBehaviour {
 	protected Vector3 mousePrev;
 	protected float distancePrev;
 
-	protected KeyCode key;
+	public KeyCode key;
 	public Vector3 keyUIOffset;
+
+	public Vector3 eatingOffset;
+	public Vector3 eatingRotationOffset;
+
+
 
 	// Use this for initialization
 	void Start () {
@@ -52,7 +60,9 @@ public class Head : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown (key)) {
-
+			StartEating ();
+		} else if (Input.GetKeyUp (key)) {
+			StopEating();
 		}
 
 	}
@@ -74,26 +84,24 @@ public class Head : MonoBehaviour {
 		Cursor.visible = true;
 	}
 
+	protected void StartEating(){
+		eatingState = EatingState.EATING;
+		transform.localPosition += eatingOffset;
+		transform.localEulerAngles += eatingRotationOffset;
+	}
+
+	protected void StopEating(){
+		eatingState = EatingState.WAITING;
+		transform.localPosition -= eatingOffset;
+		transform.localEulerAngles -= eatingRotationOffset;
+	}
+
 
 	protected Vector3 GetParentScreenPosition(){
 
 		Vector3 parentPos = Camera.main.WorldToScreenPoint(parent.transform.position);
 		parentPos.Set (parentPos.x, parentPos.y, 0);
 		return parentPos;
-	}
-
-
-	// did the mouse click this?
-	protected bool Pick(){
-
-		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
-		RaycastHit hit;
-
-		if (collider.Raycast (ray, out hit, Mathf.Infinity)) {
-			return true;
-		}
-		return false;
-
 	}
 
 	public void Grow(){
