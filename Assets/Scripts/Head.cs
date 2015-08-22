@@ -8,6 +8,7 @@ public class Head : MonoBehaviour {
 
 	public enum EatingState { WAITING, LOWERING, EATING, RAISING };
 	protected EatingState eatingState = EatingState.WAITING;
+	protected bool biting = false;
 	
 	public GameObject parent;
 	public HeadGeometry geometry;
@@ -35,9 +36,7 @@ public class Head : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
 		key = KeyManager.instance.GetKey ();
-
 	}
 	
 	// Update is called once per frame
@@ -53,15 +52,19 @@ public class Head : MonoBehaviour {
 				UpdateHold ();
 			}
 
-
 		}
 
 		// Eat if you're ahead.
 		if (headState == HeadState.HEAD) {
+
+
+
 			if (Input.GetKeyDown (key)) {
 				StartEating ();
 			} else if (Input.GetKeyUp (key)) {
 				StopEating ();
+			} else {
+				biting = false;
 			}
 		}
 
@@ -85,9 +88,9 @@ public class Head : MonoBehaviour {
 			transform.position = parent.transform.position - (unitVector * maxDistance); 
 			if( eatingState == EatingState.EATING ) transform.position += eatingOffset;
 		} else if (distance < minDistance) {
-				Vector3 unitVector = (parentPlanePos - headPlanePos).normalized;
-				transform.position = parent.transform.position - (unitVector * minDistance);
-				if( eatingState == EatingState.EATING ) transform.position += eatingOffset;
+			Vector3 unitVector = (parentPlanePos - headPlanePos).normalized;
+			transform.position = parent.transform.position - (unitVector * minDistance);
+			if( eatingState == EatingState.EATING ) transform.position += eatingOffset;
 		}
 
 		transform.LookAt (parent.transform.position);
@@ -121,8 +124,14 @@ public class Head : MonoBehaviour {
 		transform.localPosition += eatingOffset;
 		transform.localEulerAngles += eatingRotationOffset;
 
+		biting = true;
+
 		// make sure not to fight with the offset when you're holding a head and eating at the same time
 		if( held ) heldOffset += eatingOffset;
+	}
+
+	public bool IsBiting(){
+		return biting;
 	}
 
 	protected void StopEating(){
@@ -158,7 +167,7 @@ public class Head : MonoBehaviour {
 		for( int i = 0; i < 2; i++ ){
 
 			GameObject growth = Instantiate( Resources.Load ("Prefabs/Pivot")) as GameObject;
-			growth.gameObject.name = "Head" + Random.Range(0,255);
+			//growth.gameObject.name = "Head" + Random.Range(0,255);
 			growth.transform.parent = transform;
 			growth.transform.localPosition = Vector3.zero;
 			growth.transform.rotation = transform.rotation;
