@@ -19,30 +19,48 @@ public class KeyManager : MonoBehaviour {
 		}
 	}
 
-	protected List<KeyCode> keys = new List<KeyCode>{
-		KeyCode.G,
-		KeyCode.H,
-		KeyCode.F,
-		KeyCode.T,
-		KeyCode.B,
-		KeyCode.V,
-		KeyCode.Y,
+	protected List<KeyCode> keys;
+	protected List<KeyCode> masterKeys = new List<KeyCode>{
+		KeyCode.Q,
+		KeyCode.W,
+		KeyCode.E,
 		KeyCode.R,
-		KeyCode.N,
+		KeyCode.A,
+		KeyCode.S,
 		KeyCode.D,
-		KeyCode.J,
+		KeyCode.F,
+		KeyCode.Z,
+		KeyCode.X,
 		KeyCode.C,
+		KeyCode.V,
+		KeyCode.T,
+		KeyCode.G,
+		KeyCode.B,
+		KeyCode.Y,
+		KeyCode.H,
+		KeyCode.N,
 		KeyCode.U,
+		KeyCode.J,
+		KeyCode.M,
 	};
 
+	public void Awake(){
+		keys = new List<KeyCode> ( masterKeys );
+	}
+
+
 	public KeyCode GetKey(){
+
+		if (keys.Count == 0) {
+			keys = new List<KeyCode>( masterKeys );
+		}
 		KeyCode key = keys [0];
 		keys.RemoveAt (0);
 		return key;
 	}
 
 	public void ReturnKey( KeyCode key ){
-		keys.Add (key);
+		keys.Insert(0,key);
 	}
 
 }

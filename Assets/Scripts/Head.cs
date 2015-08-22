@@ -162,7 +162,7 @@ public class Head : MonoBehaviour {
 			growth.transform.parent = transform;
 			growth.transform.localPosition = Vector3.zero;
 			growth.transform.rotation = transform.rotation;
-			growth.transform.RotateAround( growth.transform.position, Vector3.up, -30 + 60 * i);
+			growth.transform.RotateAround( growth.transform.position, Vector3.up, 60 + -60 * i);
 		}
 	
 	}
