@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Head : MonoBehaviour {
 
-	protected GameObject parent;
+	public GameObject parent;
 	public HeadGeometry geometry;
 	
 	public float maxAngle;
@@ -18,18 +18,22 @@ public class Head : MonoBehaviour {
 	protected Vector3 mousePrev;
 	protected float distancePrev;
 
+	protected KeyCode key;
+	public Vector3 keyUIOffset;
+
 	// Use this for initialization
 	void Start () {
-		Debug.Log ("Head Start");
-		parent = transform.parent.gameObject;
+
+		key = KeyManager.instance.GetKey ();
 
 	}
 	
 	// Update is called once per frame
 	void Update () {
 
-		if (held) {
 
+		// Movement Code
+		if (held) {
 
 			Vector3 parentPos = GetParentScreenPosition();
 
@@ -45,10 +49,11 @@ public class Head : MonoBehaviour {
 			if(Input.GetMouseButtonUp(0)){
 				Release();
 			}
-
 		}
 
+		if (Input.GetKeyDown (key)) {
 
+		}
 
 	}
 
@@ -107,5 +112,10 @@ public class Head : MonoBehaviour {
 
 	protected void OnDrawGizmos(){
 		Gizmos.DrawLine (parent.transform.position, transform.position);
+	}
+
+	protected void OnGUI(){
+		Vector3 screenPoint = Camera.main.WorldToScreenPoint (geometry.transform.position + keyUIOffset);
+		GUI.Label (new Rect (screenPoint.x, Screen.height - screenPoint.y, 30, 20), key.ToString ());
 	}
 }
