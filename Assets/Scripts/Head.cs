@@ -30,6 +30,8 @@ public class Head : MonoBehaviour {
 
 	public GameObject features;
 
+	public Texture2D keyUI;
+
 
 	// Use this for initialization
 	void Start () {
@@ -173,7 +175,8 @@ public class Head : MonoBehaviour {
 
 		if (headState == HeadState.HEAD) {
 			Vector3 screenPoint = Camera.main.WorldToScreenPoint (geometry.transform.position + keyUIOffset);
-			GUI.Label (new Rect (screenPoint.x, Screen.height - screenPoint.y, 30, 20), key.ToString ());
+			GUI.Label (new Rect( screenPoint.x - 15, Screen.height - screenPoint.y - 5, 30, 30), keyUI, UIStyle.instance.style);
+			GUI.Label (new Rect (screenPoint.x - 15, Screen.height - screenPoint.y, 30, 20), key.ToString (), UIStyle.instance.style);
 		}
 	}
 }
