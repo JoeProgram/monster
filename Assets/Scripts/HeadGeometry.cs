@@ -19,7 +19,7 @@ public class HeadGeometry : MonoBehaviour {
 			}
 
 			if (Input.GetMouseButtonDown (1)) {
-				head.Grow();
+				head.Cut();
 			}
 		}
 	}

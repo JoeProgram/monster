@@ -3,9 +3,12 @@ using System.Collections;
 
 public class Head : MonoBehaviour {
 
+	public enum HeadState { GROWING, HEAD, NECK, CHARRED };
+	public HeadState headState = HeadState.HEAD; 
+
 	public enum EatingState { WAITING, LOWERING, EATING, RAISING };
 	protected EatingState eatingState = EatingState.WAITING;
-
+	
 	public GameObject parent;
 	public HeadGeometry geometry;
 	
@@ -25,6 +28,7 @@ public class Head : MonoBehaviour {
 	public Vector3 eatingOffset;
 	public Vector3 eatingRotationOffset;
 
+	public GameObject features;
 
 
 	// Use this for initialization
@@ -50,10 +54,13 @@ public class Head : MonoBehaviour {
 
 		}
 
-		if (Input.GetKeyDown (key)) {
-			StartEating ();
-		} else if (Input.GetKeyUp (key)) {
-			StopEating();
+		// Eat if you're ahead.
+		if (headState == HeadState.HEAD) {
+			if (Input.GetKeyDown (key)) {
+				StartEating ();
+			} else if (Input.GetKeyUp (key)) {
+				StopEating ();
+			}
 		}
 
 	}
@@ -76,9 +83,9 @@ public class Head : MonoBehaviour {
 			transform.position = parent.transform.position - (unitVector * maxDistance); 
 			if( eatingState == EatingState.EATING ) transform.position += eatingOffset;
 		} else if (distance < minDistance) {
-			Vector3 unitVector = (parentPlanePos - headPlanePos).normalized;
-			transform.position = parent.transform.position - (unitVector * minDistance);
-			if( eatingState == EatingState.EATING ) transform.position += eatingOffset;
+				Vector3 unitVector = (parentPlanePos - headPlanePos).normalized;
+				transform.position = parent.transform.position - (unitVector * minDistance);
+				if( eatingState == EatingState.EATING ) transform.position += eatingOffset;
 		}
 
 		transform.LookAt (parent.transform.position);
@@ -132,6 +139,18 @@ public class Head : MonoBehaviour {
 		return parentPos;
 	}
 
+	public void Cut(){
+		if (eatingState == EatingState.EATING) StopEating ();
+		TurnIntoNeck ();
+		Grow ();
+	}
+
+	protected void TurnIntoNeck(){
+		headState = HeadState.NECK;
+		features.SetActive (false);
+		KeyManager.instance.ReturnKey (key);
+	}
+
 	public void Grow(){
 
 		for( int i = 0; i < 2; i++ ){
@@ -151,7 +170,10 @@ public class Head : MonoBehaviour {
 	}
 
 	protected void OnGUI(){
-		Vector3 screenPoint = Camera.main.WorldToScreenPoint (geometry.transform.position + keyUIOffset);
-		GUI.Label (new Rect (screenPoint.x, Screen.height - screenPoint.y, 30, 20), key.ToString ());
+
+		if (headState == HeadState.HEAD) {
+			Vector3 screenPoint = Camera.main.WorldToScreenPoint (geometry.transform.position + keyUIOffset);
+			GUI.Label (new Rect (screenPoint.x, Screen.height - screenPoint.y, 30, 20), key.ToString ());
+		}
 	}
 }

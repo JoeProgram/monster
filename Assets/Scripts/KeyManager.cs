@@ -41,4 +41,8 @@ public class KeyManager : MonoBehaviour {
 		return key;
 	}
 
+	public void ReturnKey( KeyCode key ){
+		keys.Add (key);
+	}
+
 }
