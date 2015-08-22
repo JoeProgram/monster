@@ -4,9 +4,15 @@ using System.Collections;
 public class Soldier : MonoBehaviour {
 
 	protected int health;
+	protected NavMeshAgent agent;
 
 	void Start(){
 		health = 1;
+		agent = GetComponent<NavMeshAgent> ();
+	}
+
+	void Update(){
+		agent.SetDestination (Vector3.zero);
 	}
 
 	void OnCollisionEnter( Collision collision ){
