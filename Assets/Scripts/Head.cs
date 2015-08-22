@@ -4,6 +4,7 @@ using System.Collections;
 public class Head : MonoBehaviour {
 
 	protected GameObject parent;
+	public HeadGeometry geometry;
 	
 	public float maxAngle;
 	public float minDistance;
@@ -26,10 +27,9 @@ public class Head : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 		if (held) {
 
-			Debug.Log("held");
 
 			Vector3 parentPos = GetParentScreenPosition();
 
@@ -45,7 +45,10 @@ public class Head : MonoBehaviour {
 			if(Input.GetMouseButtonUp(0)){
 				Release();
 			}
+
 		}
+
+
 
 	}
 
@@ -78,8 +81,6 @@ public class Head : MonoBehaviour {
 	// did the mouse click this?
 	protected bool Pick(){
 
-		Debug.Log ("Pick!");
-
 		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
 		RaycastHit hit;
 
@@ -88,5 +89,23 @@ public class Head : MonoBehaviour {
 		}
 		return false;
 
+	}
+
+	public void Grow(){
+
+		for( int i = 0; i < 2; i++ ){
+
+			GameObject growth = Instantiate( Resources.Load ("Prefabs/Pivot")) as GameObject;
+			growth.gameObject.name = "Head" + Random.Range(0,255);
+			growth.transform.parent = transform;
+			growth.transform.localPosition = Vector3.zero;
+			growth.transform.rotation = transform.rotation;
+			growth.transform.RotateAround( growth.transform.position, Vector3.up, -30 + 60 * i);
+		}
+	
+	}
+
+	protected void OnDrawGizmos(){
+		Gizmos.DrawLine (parent.transform.position, transform.position);
 	}
 }
