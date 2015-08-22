@@ -16,10 +16,8 @@ public class Head : MonoBehaviour {
 	public float distanceFactor;
 
 	protected bool held = false;
+	protected Vector3 heldOffset;
 	public Collider collider;
-
-	protected Vector3 mousePrev;
-	protected float distancePrev;
 
 	public KeyCode key;
 	public Vector3 keyUIOffset;
@@ -43,20 +41,13 @@ public class Head : MonoBehaviour {
 		// Movement Code
 		if (held) {
 
-			Vector3 parentPos = GetParentScreenPosition();
-
-			float distance = ( Input.mousePosition - parentPos ).magnitude;
-			float adjustedDistance = (distancePrev - distance) * distanceFactor;
-
-			transform.localPosition += new Vector3(0,0,adjustedDistance);
-			transform.localPosition = new Vector3( transform.localPosition.x, transform.localPosition.y, Mathf.Max (minDistance, Mathf.Min (maxDistance, transform.localPosition.z)) );
-		
-			mousePrev = Input.mousePosition;
-			distancePrev = distance;
-
 			if(Input.GetMouseButtonUp(0)){
 				Release();
+			} else {
+				UpdateHold ();
 			}
+
+
 		}
 
 		if (Input.GetKeyDown (key)) {
@@ -67,16 +58,48 @@ public class Head : MonoBehaviour {
 
 	}
 
+	// handle the head moving around.
+	protected void UpdateHold(){
+
+		// move the head based on the mouse
+		Vector3 hitPoint = GetMouseInWorldPoint();
+		transform.position = hitPoint + heldOffset;
+
+		//correct for it being too far away
+
+		Vector3 parentPlanePos = new Vector3( parent.transform.position.x, 0, parent.transform.position.z);
+		Vector3 headPlanePos = new Vector3(transform.position.x, 0, transform.position.z);
+
+		float distance = Vector3.Distance (parentPlanePos, headPlanePos);
+		if (distance > maxDistance) {
+			Vector3 unitVector = (parentPlanePos - headPlanePos).normalized;
+			transform.position = parent.transform.position - (unitVector * maxDistance); 
+			if( eatingState == EatingState.EATING ) transform.position += eatingOffset;
+		} else if (distance < minDistance) {
+			Vector3 unitVector = (parentPlanePos - headPlanePos).normalized;
+			transform.position = parent.transform.position - (unitVector * minDistance);
+			if( eatingState == EatingState.EATING ) transform.position += eatingOffset;
+		}
+
+		transform.LookAt (parent.transform.position);
+	}
+
 	public void Hold(){
 
 		held = true;
 		Cursor.visible = false;
 
-		mousePrev = Input.mousePosition;
-		Vector3 parentPos = GetParentScreenPosition(); 
+		// find the offset between the center of the object and the mouse hit on headplane
+		Vector3 hitPoint = GetMouseInWorldPoint();
+		heldOffset = transform.position - hitPoint; 
 
-		distancePrev = (mousePrev - parentPos ).magnitude;
+	}
 
+	protected Vector3 GetMouseInWorldPoint(){
+		Ray ray = Camera.main.ScreenPointToRay (Input.mousePosition);
+		RaycastHit hit;
+		HeadPlane.instance.GetComponent<Collider>().Raycast (ray, out hit, Mathf.Infinity);
+		return hit.point; 
 	}
 
 	protected void Release(){
@@ -88,12 +111,17 @@ public class Head : MonoBehaviour {
 		eatingState = EatingState.EATING;
 		transform.localPosition += eatingOffset;
 		transform.localEulerAngles += eatingRotationOffset;
+
+		// make sure not to fight with the offset when you're holding a head and eating at the same time
+		if( held ) heldOffset += eatingOffset;
 	}
 
 	protected void StopEating(){
 		eatingState = EatingState.WAITING;
 		transform.localPosition -= eatingOffset;
 		transform.localEulerAngles -= eatingRotationOffset;
+
+		if( held ) heldOffset -= eatingOffset;
 	}
 
 

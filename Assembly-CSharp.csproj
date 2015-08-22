@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Head.cs" />
      <Compile Include="Assets\Scripts\HeadGeometry.cs" />
+     <Compile Include="Assets\Scripts\HeadPlane.cs" />
      <Compile Include="Assets\Scripts\KeyManager.cs" />
      <Compile Include="Assets\Scripts\Soldier.cs" />
  <Reference Include="UnityEngine.UI">
