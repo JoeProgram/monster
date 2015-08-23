@@ -9,6 +9,10 @@ public class Intro : MonoBehaviour {
 	public Text scoreLabel;
 	protected Color scoreLabelColor;
 
+	public Text healthLabel;
+	public Image healthFill;
+	public Image healthBackground;
+
 	public WaveSpawner waveSpawner;
 
 	public GameObject hydra;
@@ -36,6 +40,10 @@ public class Intro : MonoBehaviour {
 
 		scoreLabelColor = scoreLabel.color;
 		scoreLabel.color = new Color (scoreLabelColor.r, scoreLabelColor.g, scoreLabelColor.b, 0);
+
+		DOTween.ToAlpha (() => healthLabel.color, x => healthLabel.color = x, 0, 0);
+		DOTween.ToAlpha (() => healthFill.color, x => healthFill.color = x, 0, 0);
+		DOTween.ToAlpha (() => healthBackground.color, x => healthBackground.color = x, 0, 0);
 
 	}
 
@@ -88,20 +96,24 @@ public class Intro : MonoBehaviour {
 		DOTween.ToAlpha (() => instructions.color, x => instructions.color = x, 0, 0.5f);
 		yield return new WaitForSeconds (0.5f);
 
+		DOTween.ToAlpha (() => healthLabel.color, x => healthLabel.color = x, 1, 0.5f);
+		DOTween.ToAlpha (() => healthFill.color, x => healthFill.color = x, 1, 0.5f);
+		DOTween.ToAlpha (() => healthBackground.color, x => healthBackground.color = x, 1, 0.5f);
+		scoreLabel.DOColor (scoreLabelColor, 0.5f);
+		
 		instructions.text = "Bite";
 		DOTween.ToAlpha (() => rightClickMouse.color, x => rightClickMouse.color = x, 1, 0.5f);
 		DOTween.ToAlpha (() => instructions.color, x => instructions.color = x, 1, 0.5f);
 
 		yield return new WaitForSeconds (1.5f);
 
-		hydraCanvas.gameObject.SetActive (false);
 
 		//wait for person to right click
 		while (princess != null) {
 			yield return null;
 		}
 
-		scoreLabel.DOColor (scoreLabelColor, 3f);
+
 
 		DOTween.ToAlpha (() => rightClickMouse.color, x => rightClickMouse.color = x, 0, 0.5f);
 		DOTween.ToAlpha (() => instructions.color, x => instructions.color = x, 0, 0.5f);
@@ -111,6 +123,10 @@ public class Intro : MonoBehaviour {
 		yield return new WaitForSeconds (1);
 		waveSpawner.enabled = true;
 
+		yield return new WaitForSeconds(3);
+		hydraCanvas.gameObject.SetActive (false);
+
+		
 	}
 
 }
