@@ -35,8 +35,15 @@ public class WaveSpawner : MonoBehaviour {
 	}
 
 	protected List<WaveData> waves = new List<WaveData>{
-		new WaveData(100,50,60),
-		new WaveData(10,0,60)
+		new WaveData(1,0,60),
+		new WaveData(3,0,60),
+		new WaveData(5,1,60),
+		new WaveData(10,1,60),
+		new WaveData(15,1,60),
+		new WaveData(20,2,60),
+		new WaveData(25,2,60),
+		new WaveData(30,3,60),
+		new WaveData(50,5,60),
 	};
 
 	protected int waveCounter = 0;

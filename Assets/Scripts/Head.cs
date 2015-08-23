@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using DG.Tweening;
 
 public class Head : MonoBehaviour {
 
@@ -12,7 +13,9 @@ public class Head : MonoBehaviour {
 	
 	public GameObject parent;
 	public HeadGeometry geometry;
-	
+
+	public int health;
+
 	public float maxAngle;
 	public float minDistance;
 	public float maxDistance;
@@ -33,10 +36,16 @@ public class Head : MonoBehaviour {
 
 	public Texture2D keyUI;
 
+	public float deadHeadSidewaysForce;
+	public float deadHeadUpForce;
+
+	Color ogColor; // original Color
 
 	// Use this for initialization
 	void Start () {
 		key = KeyManager.instance.GetKey ();
+		ogColor = geometry.GetComponent<Renderer> ().material.color; 
+
 	}
 	
 	// Update is called once per frame
@@ -150,13 +159,26 @@ public class Head : MonoBehaviour {
 		return parentPos;
 	}
 
+	public void Hurt(){
+		health --;
+
+		geometry.GetComponent<Renderer> ().material.color = Color.red;
+		geometry.GetComponent<Renderer> ().material.DOColor (ogColor, 0.25f);
+
+		if (health <= 0) {
+			Cut();
+		}
+	}
+
 	public void Cut(){
 
 		if (headState == HeadState.HEAD) {
+
 			if (eatingState == EatingState.EATING)
 				StopEating ();
 			TurnIntoNeck ();
 			Grow ();
+
 		}
 	}
 
@@ -164,6 +186,11 @@ public class Head : MonoBehaviour {
 		headState = HeadState.NECK;
 		features.SetActive (false);
 		KeyManager.instance.ReturnKey (key);
+
+		GameObject deadhead = Instantiate(Resources.Load ("Prefabs/DeadHead")) as GameObject;
+		deadhead.transform.position = transform.position + Vector3.up;
+		deadhead.transform.rotation = transform.rotation;
+		deadhead.GetComponent<Rigidbody> ().AddForce (new Vector3 (Random.Range (-deadHeadSidewaysForce, deadHeadSidewaysForce),  deadHeadUpForce, Random.Range (-deadHeadSidewaysForce, deadHeadSidewaysForce)));
 	}
 
 	public void Grow(){

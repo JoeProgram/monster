@@ -43,8 +43,10 @@ public class Soldier : MonoBehaviour {
 
 	void OnCollisionEnter( Collision collision ){
 
-		if (collision.gameObject.CompareTag ("hydra") && collision.gameObject.transform.parent.GetComponent<Head>().IsBiting()) {
-			GetHurt();
+		if (collision.gameObject.CompareTag ("hydra") && collision.gameObject.transform.parent.GetComponent<Head> ().IsBiting ()) {
+			GetHurt ();
+		} else if (collision.gameObject.CompareTag ("hydra") && soldierState == SoldierState.ATTACKING) {
+			collision.gameObject.GetComponentInParent<Head>().Hurt();
 		}
 
 		if (soldierState == SoldierState.ATTACKING && collision.gameObject.CompareTag ("floor")) {
