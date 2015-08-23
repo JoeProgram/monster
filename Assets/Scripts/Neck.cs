@@ -23,6 +23,7 @@ public class Neck : MonoBehaviour {
 		for( int i = 0; i < neckPieceCount; i++){
 			GameObject piece = Instantiate( neckPiecePrefab ) as GameObject;
 			piece.transform.localScale += Vector3.one * i * scalePerSection;
+			piece.transform.parent = Hydra.instance.transform;
 			neckPieces.Add( piece );
 
 		}
@@ -32,12 +33,15 @@ public class Neck : MonoBehaviour {
 	// Update is called once per frame
 	void Update (){
 
-		float distance = Vector3.Distance(head.transform.position, root.transform.position);
-		Vector3 middle = (head.transform.position + root.transform.position) / 2;
-		middle += new Vector3(0, ((head.maxDistance / distance) - 1) * neckRaiseFactor, 0);
+		if (Hydra.instance.state == Hydra.HydraState.ALIVE) {
 
-		for (int i = 0; i < neckPieces.Count; i++) {
-			neckPieces[i].transform.position = Bezier2( head.transform.position, middle, root.transform.position, (1.0f * i / neckPieces.Count));
+			float distance = Vector3.Distance (head.transform.position, root.transform.position);
+			Vector3 middle = (head.transform.position + root.transform.position) / 2;
+			middle += new Vector3 (0, ((head.maxDistance / distance) - 1) * neckRaiseFactor, 0);
+
+			for (int i = 0; i < neckPieces.Count; i++) {
+				neckPieces [i].transform.position = Bezier2 (head.transform.position, middle, root.transform.position, (1.0f * i / neckPieces.Count));
+			}
 		}
 
 	}

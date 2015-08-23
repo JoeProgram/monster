@@ -35,6 +35,7 @@ public class WaveSpawner : MonoBehaviour {
 	}
 
 	protected List<WaveData> waves = new List<WaveData>{
+		new WaveData(50,0,60),  //test wave
 		new WaveData(1,0,60),
 		new WaveData(3,0,60),
 		new WaveData(5,1,60),

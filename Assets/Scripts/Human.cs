@@ -3,7 +3,8 @@ using System.Collections;
 
 public class Human : MonoBehaviour {
 
-	protected int health;
+	public int health;
+	public float nutrition;
 
 	// Use this for initialization
 	void Start () {
@@ -26,6 +27,7 @@ public class Human : MonoBehaviour {
 
 	protected virtual void Die(){
 		ScoreKeeper.instance.AddScore (1);
+		Hydra.instance.Heal (nutrition);
 		WaveSpawner.instance.HumanKilled ();
 		Destroy (gameObject);
 	}

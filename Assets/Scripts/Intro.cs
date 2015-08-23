@@ -24,12 +24,15 @@ public class Intro : MonoBehaviour {
 
 	public Human princess;
 
+	public Canvas hydraCanvas;
 
 
 
 	void Awake(){
 		hydra.transform.position = hydraStartPos;
 		waveSpawner.enabled = false;
+
+		hydraCanvas.gameObject.SetActive (true);
 
 		scoreLabelColor = scoreLabel.color;
 		scoreLabel.color = new Color (scoreLabelColor.r, scoreLabelColor.g, scoreLabelColor.b, 0);
@@ -90,6 +93,8 @@ public class Intro : MonoBehaviour {
 		DOTween.ToAlpha (() => instructions.color, x => instructions.color = x, 1, 0.5f);
 
 		yield return new WaitForSeconds (1.5f);
+
+		hydraCanvas.gameObject.SetActive (false);
 
 		//wait for person to right click
 		while (princess != null) {

@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class Soldier : Human {
 
-	public enum SoldierState { WALKING, ATTACKING };
+	public enum SoldierState { WALKING, ATTACKING, CELEBRATING };
 	public SoldierState soldierState = SoldierState.WALKING;
 
 	public float attackDistance;
@@ -21,6 +21,8 @@ public class Soldier : Human {
 
 	protected Tween swordTween;
 
+	public int celeberateForce;
+
 	void Start(){
 		health = 1;
 		agent = GetComponent<NavMeshAgent> ();
@@ -30,6 +32,10 @@ public class Soldier : Human {
 	}
 
 	void Update(){
+
+		if (Hydra.instance.state == Hydra.HydraState.DEAD && soldierState != SoldierState.CELEBRATING) {
+			StartCoroutine(StartCelebration());
+		}
 
 		if (soldierState == SoldierState.WALKING) {
 			agent.SetDestination (target.transform.position);
@@ -47,12 +53,16 @@ public class Soldier : Human {
 
 		if (collision.gameObject.CompareTag ("hydra") && collision.gameObject.transform.parent.GetComponent<Head> ().IsBiting ()) {
 			GetHurt ();
-		} else if (collision.gameObject.CompareTag ("hydra") && collision.collider == target && soldierState == SoldierState.ATTACKING) {
+		} else if (collision.gameObject.CompareTag ("hydra") && collision.collider == target && soldierState == SoldierState.ATTACKING ) {
 			collision.gameObject.GetComponentInParent<Head>().Hurt();
 		}
 
 		if (soldierState == SoldierState.ATTACKING && collision.gameObject.CompareTag ("floor")) {
 			StartWalk();
+		}
+
+		if (soldierState == SoldierState.CELEBRATING && collision.gameObject.CompareTag ("floor")) {
+			GetComponent<Rigidbody> ().AddForce(Vector3.up * celeberateForce);
 		}
 	}
 
@@ -77,7 +87,13 @@ public class Soldier : Human {
 		agent.enabled = true;
 	}
 
-
+	public IEnumerator StartCelebration(){
+		soldierState = SoldierState.CELEBRATING;
+		agent.enabled = false;
+		yield return new WaitForSeconds(Random.Range(0.1f,0.5f));
+		transform.LookAt (new Vector3(Camera.main.transform.position.x, transform.position.y, Camera.main.transform.position.z) );
+		GetComponent<Rigidbody> ().AddForce(Vector3.up * celeberateForce);
+	}
 
 
 }

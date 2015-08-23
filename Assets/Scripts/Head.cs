@@ -36,8 +36,7 @@ public class Head : MonoBehaviour {
 
 	public Texture2D keyUI;
 
-	public float deadHeadSidewaysForce;
-	public float deadHeadUpForce;
+
 
 	public AudioClip sfxHurt;
 
@@ -166,12 +165,16 @@ public class Head : MonoBehaviour {
 		AudioSource.PlayClipAtPoint (sfxHurt, Vector3.zero);
 
 		health --;
+		Hydra.instance.Hurt ();
 
-		geometry.GetComponent<Renderer> ().material.color = Color.red;
-		geometry.GetComponent<Renderer> ().material.DOColor (ogColor, 0.25f);
+		if (Hydra.instance.state != Hydra.HydraState.DEAD) {
 
-		if (health <= 0) {
-			Cut();
+			geometry.GetComponent<Renderer> ().material.color = Color.red;
+			geometry.GetComponent<Renderer> ().material.DOColor (ogColor, 0.25f);
+
+			if (health <= 0) {
+				Cut ();
+			}
 		}
 	}
 
@@ -192,10 +195,7 @@ public class Head : MonoBehaviour {
 		features.SetActive (false);
 		KeyManager.instance.ReturnKey (key);
 
-		GameObject deadhead = Instantiate(Resources.Load ("Prefabs/DeadHead")) as GameObject;
-		deadhead.transform.position = transform.position + Vector3.up;
-		deadhead.transform.rotation = transform.rotation;
-		deadhead.GetComponent<Rigidbody> ().AddForce (new Vector3 (Random.Range (-deadHeadSidewaysForce, deadHeadSidewaysForce),  deadHeadUpForce, Random.Range (-deadHeadSidewaysForce, deadHeadSidewaysForce)));
+		Hydra.instance.CreateDeadHead (transform);
 	}
 
 	public void Grow(){
