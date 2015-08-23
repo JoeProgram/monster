@@ -9,6 +9,7 @@ public class Soldier : MonoBehaviour {
 
 	public float attackDistance;
 	public float jumpForce;
+	public float minJumpUp = 100;
 
 	protected int health;
 	protected NavMeshAgent agent;
@@ -63,7 +64,7 @@ public class Soldier : MonoBehaviour {
 
 	protected IEnumerator AttackJump(){
 		yield return null;
-		GetComponent<Rigidbody> ().AddForce((target.transform.position - transform.position).normalized * jumpForce);
+		GetComponent<Rigidbody> ().AddForce((target.transform.position - transform.position).normalized * jumpForce + Vector3.up * minJumpUp);
 	}
 
 	public void StartWalk(){
