@@ -43,7 +43,7 @@ public class Hydra : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
-		if (Input.GetMouseButtonDown (1)) {
+		if (Input.GetMouseButtonDown (1) || Input.GetKeyDown(KeyCode.Space)) {
 			PlayBiteSound();
 		}
 	}

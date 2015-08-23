@@ -3,11 +3,11 @@ using System.Collections;
 
 public class HeadGeometry : MonoBehaviour {
 
-	Head head;
+	public Head head;
 
-	protected void Start(){
-		head = transform.parent.GetComponent<Head> ();
-	}
+	//protected void Start(){
+	//	head = transform.parent.GetComponent<Head> ();
+	//}
 
 
 
@@ -18,9 +18,10 @@ public class HeadGeometry : MonoBehaviour {
 				head.Hold ();
 			}
 
-			if (Input.GetKeyDown(KeyCode.Space) ) {
-				head.Cut();
-			}
+			//for debuggin
+			//if (Input.GetKeyDown(KeyCode.Space) ) {
+		//		head.Cut();
+			//}
 		}
 	}
 

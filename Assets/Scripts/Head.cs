@@ -39,6 +39,7 @@ public class Head : MonoBehaviour {
 
 
 	public AudioClip sfxHurt;
+	public AudioClip sfxGrowHead;
 
 	Color ogColor; // original Color
 
@@ -68,9 +69,9 @@ public class Head : MonoBehaviour {
 		// Eat if you're ahead.
 		if (headState == HeadState.HEAD) {
 
-			if (Input.GetMouseButtonDown(1) ){
+			if (eatingState == EatingState.WAITING && (Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Space)) ){
 				StartEating ();
-			} else if (Input.GetMouseButtonUp(1)) {
+			} else if (eatingState == EatingState.EATING && (Input.GetMouseButtonUp(1) || Input.GetKeyUp(KeyCode.Space))) {
 				StopEating ();
 			} else {
 				biting = false;
@@ -225,6 +226,8 @@ public class Head : MonoBehaviour {
 	}
 
 	public void Grow(){
+
+		AudioSource.PlayClipAtPoint (sfxGrowHead, Vector3.zero);
 
 		for( int i = 0; i < 2; i++ ){
 

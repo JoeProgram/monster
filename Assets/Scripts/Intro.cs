@@ -26,6 +26,10 @@ public class Intro : MonoBehaviour {
 	public SpriteRenderer tutorialSelect;
 	public Text instructions;
 
+	public Text orLabel;
+	public Text spaceLabel;
+	public Image spaceImage;
+
 	public Human princess;
 
 	public Canvas hydraCanvas;
@@ -46,6 +50,10 @@ public class Intro : MonoBehaviour {
 		DOTween.ToAlpha (() => healthLabel.color, x => healthLabel.color = x, 0, 0);
 		DOTween.ToAlpha (() => healthFill.color, x => healthFill.color = x, 0, 0);
 		DOTween.ToAlpha (() => healthBackground.color, x => healthBackground.color = x, 0, 0);
+
+		DOTween.ToAlpha (() => orLabel.color, x => orLabel.color = x, 0, 0);
+		DOTween.ToAlpha (() => spaceLabel.color, x => spaceLabel.color = x, 0, 0);
+		DOTween.ToAlpha (() => spaceImage.color, x => spaceImage.color = x, 0, 0);
 
 	}
 
@@ -108,6 +116,9 @@ public class Intro : MonoBehaviour {
 		instructions.text = "Bite";
 		DOTween.ToAlpha (() => rightClickMouse.color, x => rightClickMouse.color = x, 1, 0.5f);
 		DOTween.ToAlpha (() => instructions.color, x => instructions.color = x, 1, 0.5f);
+		DOTween.ToAlpha (() => orLabel.color, x => orLabel.color = x, 1, 0.5f);
+		DOTween.ToAlpha (() => spaceLabel.color, x => spaceLabel.color = x, 1, 0.5f);
+		DOTween.ToAlpha (() => spaceImage.color, x => spaceImage.color = x, 1, 0.5f);
 
 		yield return new WaitForSeconds (1.5f);
 
@@ -121,6 +132,9 @@ public class Intro : MonoBehaviour {
 
 		DOTween.ToAlpha (() => rightClickMouse.color, x => rightClickMouse.color = x, 0, 0.5f);
 		DOTween.ToAlpha (() => instructions.color, x => instructions.color = x, 0, 0.5f);
+		DOTween.ToAlpha (() => orLabel.color, x => orLabel.color = x, 0, 0.5f);
+		DOTween.ToAlpha (() => spaceLabel.color, x => spaceLabel.color = x, 0, 0.5f);
+		DOTween.ToAlpha (() => spaceImage.color, x => spaceImage.color = x, 0, 0.5f);
 
 		yield return new WaitForSeconds (0.5f);
 
