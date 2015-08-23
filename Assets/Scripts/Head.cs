@@ -16,6 +16,7 @@ public class Head : MonoBehaviour {
 
 	public int health;
 
+	public bool limitAngle;
 	public float maxAngle;
 	public float minDistance;
 	public float maxDistance;
@@ -53,8 +54,6 @@ public class Head : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		Debug.Log ("Transform:" + transform.position);
-
 		// Movement Code
 		if (held) {
 
@@ -89,30 +88,53 @@ public class Head : MonoBehaviour {
 	// handle the head moving around.
 	protected void UpdateHold(){
 
+		Vector3 ogHeadPlanePos = new Vector3 (transform.position.x, HeadPlane.instance.transform.position.y, transform.position.z);
+
+
 		// move the head based on the mouse
-		Vector3 hitPoint = GetMouseInWorldPoint();
+		Vector3 hitPoint = GetMouseInWorldPoint ();
 		transform.position = hitPoint + heldOffset;
 
 		//correct for it being too far away
 
-		Vector3 parentPlanePos = new Vector3( parent.transform.position.x, HeadPlane.instance.transform.position.y, parent.transform.position.z);
-		Vector3 headPlanePos = new Vector3(transform.position.x, HeadPlane.instance.transform.position.y, transform.position.z);
+		Vector3 parentPlanePos = new Vector3 (parent.transform.position.x, HeadPlane.instance.transform.position.y, parent.transform.position.z);
+		Vector3 headPlanePos = new Vector3 (transform.position.x, HeadPlane.instance.transform.position.y, transform.position.z);
 
 		float distance = Vector3.Distance (parentPlanePos, headPlanePos);
 		if (distance > maxDistance) {
+			distance = maxDistance;
 			Vector3 unitVector = (parentPlanePos - headPlanePos).normalized;
 			transform.position = parent.transform.position - (unitVector * maxDistance); 
-			if( eatingState == EatingState.EATING ) transform.position += eatingOffset;
+			if (eatingState == EatingState.EATING)
+				transform.position += eatingOffset;
 		} else if (distance < minDistance) {
+			distance = minDistance;
 			Vector3 unitVector = (parentPlanePos - headPlanePos).normalized;
 			transform.position = parent.transform.position - (unitVector * minDistance);
-			if( eatingState == EatingState.EATING ) transform.position += eatingOffset;
+			if (eatingState == EatingState.EATING)
+				transform.position += eatingOffset;
 		}
 
 		if (eatingState == EatingState.EATING)
 			parentPlanePos -= eatingOffset;
 
 		transform.LookAt (parentPlanePos);
+
+		if (limitAngle) {
+			
+			//bit of a kludge
+			// if the angle is bad, use the previous vector with the new distance 
+			if (transform.localEulerAngles.y > 55 && transform.localEulerAngles.y < 275){ 
+
+				Vector3 ogUnitVec = (ogHeadPlanePos - parentPlanePos).normalized;
+				transform.position = parentPlanePos + (ogUnitVec * distance) ;
+				if (eatingState == EatingState.EATING)
+					parentPlanePos -= eatingOffset;
+				transform.LookAt (parentPlanePos);
+
+			}
+		}
+			
 	}
 
 	public void Hold(){
@@ -153,9 +175,7 @@ public class Head : MonoBehaviour {
 		eatingState = EatingState.EATING;
 		transform.localPosition += eatingOffset;
 		transform.RotateAround(transform.position, transform.right, -30);
-
-		Debug.Log ("Start Eating" + transform.localEulerAngles);
-
+	
 		biting = true;
 
 		// make sure not to fight with the offset when you're holding a head and eating at the same time
