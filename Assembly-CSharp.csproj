@@ -51,12 +51,14 @@
      <Compile Include="Assets\Scripts\Head.cs" />
      <Compile Include="Assets\Scripts\HeadGeometry.cs" />
      <Compile Include="Assets\Scripts\HeadPlane.cs" />
+     <Compile Include="Assets\Scripts\Hydra.cs" />
      <Compile Include="Assets\Scripts\KeyManager.cs" />
      <Compile Include="Assets\Scripts\Neck.cs" />
      <Compile Include="Assets\Scripts\Setup.cs" />
      <Compile Include="Assets\Scripts\Soldier.cs" />
      <Compile Include="Assets\Scripts\Tutorial.cs" />
      <Compile Include="Assets\Scripts\UIStyle.cs" />
+     <Compile Include="Assets\Scripts\WaveSpawner.cs" />
      <None Include="Assets\Demigiant\DOTween\readme.txt" />
      <None Include="Assets\Demigiant\DOTween\DOTween50.xml" />
      <None Include="Assets\Demigiant\DOTween\DOTween46.xml" />

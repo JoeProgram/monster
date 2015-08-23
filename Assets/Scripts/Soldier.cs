@@ -6,13 +6,17 @@ public class Soldier : MonoBehaviour {
 	protected int health;
 	protected NavMeshAgent agent;
 
+	protected Collider target;
+
 	void Start(){
 		health = 1;
 		agent = GetComponent<NavMeshAgent> ();
+
+		target = Hydra.instance.GetRandomTarget();
 	}
 
 	void Update(){
-		agent.SetDestination (Vector3.zero);
+		agent.SetDestination (target.transform.position);
 	}
 
 	void OnCollisionEnter( Collision collision ){
@@ -30,6 +34,7 @@ public class Soldier : MonoBehaviour {
 	}
 
 	protected void Die(){
+		WaveSpawner.instance.HumanKilled ();
 		Destroy (gameObject);
 	}
 }

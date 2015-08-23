@@ -73,6 +73,10 @@ public class Head : MonoBehaviour {
 	// handle the head moving around.
 	protected void UpdateHold(){
 
+		Debug.Log ("Mouse" + Input.mousePosition);
+
+
+
 		// move the head based on the mouse
 		Vector3 hitPoint = GetMouseInWorldPoint();
 		transform.position = hitPoint + heldOffset;
@@ -99,7 +103,7 @@ public class Head : MonoBehaviour {
 	public void Hold(){
 
 		held = true;
-		Cursor.visible = false;
+		//Cursor.visible = false;
 
 		// find the offset between the center of the object and the mouse hit on headplane
 		Vector3 hitPoint = GetMouseInWorldPoint();
