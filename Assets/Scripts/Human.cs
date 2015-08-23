@@ -6,6 +6,8 @@ public class Human : MonoBehaviour {
 	public int health;
 	public float nutrition;
 
+	public AudioClip sfxEaten;
+
 	// Use this for initialization
 	void Start () {
 		health = 1;
@@ -26,6 +28,9 @@ public class Human : MonoBehaviour {
 	}
 
 	protected virtual void Die(){
+
+		AudioSource.PlayClipAtPoint (sfxEaten, Vector3.zero);
+
 		ScoreKeeper.instance.AddScore (1);
 		Hydra.instance.Heal (nutrition);
 		WaveSpawner.instance.HumanKilled ();

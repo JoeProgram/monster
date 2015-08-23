@@ -52,6 +52,7 @@ public class Head : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
+		Debug.Log ("Transform:" + transform.position);
 
 		// Movement Code
 		if (held) {
@@ -67,8 +68,6 @@ public class Head : MonoBehaviour {
 		// Eat if you're ahead.
 		if (headState == HeadState.HEAD) {
 
-
-
 			if (Input.GetMouseButtonDown(1) ){
 				StartEating ();
 			} else if (Input.GetMouseButtonUp(1)) {
@@ -77,6 +76,12 @@ public class Head : MonoBehaviour {
 				biting = false;
 			}
 		}
+
+
+		// attempting the nuclear option to fix heads getting too low.
+		if (eatingState != EatingState.EATING)
+			transform.position = new Vector3 (transform.position.x, HeadPlane.instance.transform.position.y, transform.position.z);
+
 
 	}
 
@@ -89,8 +94,8 @@ public class Head : MonoBehaviour {
 
 		//correct for it being too far away
 
-		Vector3 parentPlanePos = new Vector3( parent.transform.position.x, 0, parent.transform.position.z);
-		Vector3 headPlanePos = new Vector3(transform.position.x, 0, transform.position.z);
+		Vector3 parentPlanePos = new Vector3( parent.transform.position.x, HeadPlane.instance.transform.position.y, parent.transform.position.z);
+		Vector3 headPlanePos = new Vector3(transform.position.x, HeadPlane.instance.transform.position.y, transform.position.z);
 
 		float distance = Vector3.Distance (parentPlanePos, headPlanePos);
 		if (distance > maxDistance) {
@@ -103,12 +108,20 @@ public class Head : MonoBehaviour {
 			if( eatingState == EatingState.EATING ) transform.position += eatingOffset;
 		}
 
-		transform.LookAt (parent.transform.position);
+		if (eatingState == EatingState.EATING)
+			parentPlanePos -= eatingOffset;
+
+		transform.LookAt (parentPlanePos);
 	}
 
 	public void Hold(){
 
 		held = true;
+
+		if (eatingState == EatingState.EATING) {
+			StopEating();
+		}
+
 		//Cursor.visible = false;
 
 		// find the offset between the center of the object and the mouse hit on headplane
@@ -126,13 +139,21 @@ public class Head : MonoBehaviour {
 
 	protected void Release(){
 		held = false;
-		Cursor.visible = true;
+		heldOffset = Vector3.zero;
+
+		//bug fix for our errant head rotation
+		if( eatingState != EatingState.EATING ) transform.LookAt (new Vector3( parent.transform.position.x, HeadPlane.instance.transform.position.y, parent.transform.position.z));
+
 	}
 
 	protected void StartEating(){
+
+
 		eatingState = EatingState.EATING;
 		transform.localPosition += eatingOffset;
-		transform.localEulerAngles += eatingRotationOffset;
+		transform.RotateAround(transform.position, transform.right, -30);
+
+		Debug.Log ("Start Eating" + transform.localEulerAngles);
 
 		biting = true;
 
@@ -145,11 +166,16 @@ public class Head : MonoBehaviour {
 	}
 
 	protected void StopEating(){
-		eatingState = EatingState.WAITING;
-		transform.localPosition -= eatingOffset;
-		transform.localEulerAngles -= eatingRotationOffset;
 
-		if( held ) heldOffset -= eatingOffset;
+		if (eatingState == EatingState.EATING) {
+			eatingState = EatingState.WAITING;
+			transform.localPosition -= eatingOffset;
+			transform.RotateAround(transform.position, transform.right, 30);
+
+			if( held ) heldOffset -= eatingOffset;
+
+			if( eatingState != EatingState.EATING ) transform.LookAt (new Vector3( parent.transform.position.x, HeadPlane.instance.transform.position.y, parent.transform.position.z));
+		}
 	}
 
 
@@ -237,6 +263,9 @@ public class Head : MonoBehaviour {
 
 		// add the new head to the body parts list
 		Hydra.instance.AddBodyPart(growth.transform.GetChild(0).GetComponent<Head>().collider);
+
+		// very sloppy on my part.  Running low on time!
+		growth.transform.GetChild(0).GetComponent<Head>().headState = HeadState.HEAD;
 
 	}
 
