@@ -12,7 +12,7 @@ public class Soldier : MonoBehaviour {
 		health = 1;
 		agent = GetComponent<NavMeshAgent> ();
 
-		target = Hydra.instance.GetRandomTarget();
+		target = Hydra.instance.GetRandomBodyPart();
 	}
 
 	void Update(){

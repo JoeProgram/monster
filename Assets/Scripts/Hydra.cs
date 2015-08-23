@@ -27,7 +27,11 @@ public class Hydra : MonoBehaviour {
 	
 	}
 
-	public Collider GetRandomTarget(){
+	public void AddBodyPart(Collider c){
+		bodyParts.Add (c);
+	}
+
+	public Collider GetRandomBodyPart(){
 		return bodyParts[ Random.Range(0, bodyParts.Count) ];
 	}
 }

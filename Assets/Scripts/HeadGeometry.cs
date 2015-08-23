@@ -18,7 +18,7 @@ public class HeadGeometry : MonoBehaviour {
 				head.Hold ();
 			}
 
-			if (Input.GetMouseButtonDown (1)) {
+			if (Input.GetKeyDown(KeyCode.Space) ) {
 				head.Cut();
 			}
 		}

@@ -59,9 +59,9 @@ public class Head : MonoBehaviour {
 
 
 
-			if (Input.GetKeyDown (key)) {
+			if (Input.GetMouseButtonDown(1) ){
 				StartEating ();
-			} else if (Input.GetKeyUp (key)) {
+			} else if (Input.GetMouseButtonUp(1)) {
 				StopEating ();
 			} else {
 				biting = false;
@@ -155,9 +155,13 @@ public class Head : MonoBehaviour {
 	}
 
 	public void Cut(){
-		if (eatingState == EatingState.EATING) StopEating ();
-		TurnIntoNeck ();
-		Grow ();
+
+		if (headState == HeadState.HEAD) {
+			if (eatingState == EatingState.EATING)
+				StopEating ();
+			TurnIntoNeck ();
+			Grow ();
+		}
 	}
 
 	protected void TurnIntoNeck(){
@@ -176,6 +180,9 @@ public class Head : MonoBehaviour {
 			growth.transform.localPosition = Vector3.zero;
 			growth.transform.rotation = transform.rotation;
 			growth.transform.RotateAround( growth.transform.position, Vector3.up, 60 + -60 * i);
+
+			// add the new head to the body parts list
+			Hydra.instance.AddBodyPart(growth.transform.GetChild(0).GetComponent<Head>().collider); 
 		}
 	
 	}
@@ -185,11 +192,12 @@ public class Head : MonoBehaviour {
 	}
 
 	protected void OnGUI(){
-
+		/*
 		if (headState == HeadState.HEAD) {
 			Vector3 screenPoint = Camera.main.WorldToScreenPoint (geometry.transform.position + keyUIOffset);
 			GUI.Label (new Rect( screenPoint.x - 15, Screen.height - screenPoint.y - 5, 30, 30), keyUI, UIStyle.instance.style);
 			GUI.Label (new Rect (screenPoint.x - 15, Screen.height - screenPoint.y, 30, 20), key.ToString (), UIStyle.instance.style);
 		}
+		*/
 	}
 }
