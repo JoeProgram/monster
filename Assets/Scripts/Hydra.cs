@@ -21,6 +21,7 @@ public class Hydra : MonoBehaviour {
 	public float deadHeadUpForce;
 
 	public Material deadMaterial;
+	public AudioClip sfxDeath;
 
 	private static Hydra _instance;
 	public static Hydra instance{
@@ -82,6 +83,8 @@ public class Hydra : MonoBehaviour {
 
 	protected void Die(){
 		state = HydraState.DEAD;
+
+		AudioSource.PlayClipAtPoint (sfxDeath, Vector3.zero);
 
 		foreach (Renderer r in GetComponentsInChildren<Renderer>()) {
 			r.material = deadMaterial;

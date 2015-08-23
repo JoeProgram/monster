@@ -30,6 +30,8 @@ public class Intro : MonoBehaviour {
 
 	public Canvas hydraCanvas;
 
+	public AudioClip sfxGrowl;
+
 
 
 	void Awake(){
@@ -59,6 +61,8 @@ public class Intro : MonoBehaviour {
 	protected IEnumerator IntroSequence(){
 
 		yield return new WaitForSeconds (1.5f);
+
+		AudioSource.PlayClipAtPoint(sfxGrowl, Vector3.zero);
 
 		Color titleLabelColor = new Color (titleLabel.color.r, titleLabel.color.g, titleLabel.color.b, 1);
 		titleLabel.DOColor(titleLabelColor, 3f);
