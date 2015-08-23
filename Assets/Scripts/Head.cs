@@ -73,10 +73,6 @@ public class Head : MonoBehaviour {
 	// handle the head moving around.
 	protected void UpdateHold(){
 
-		Debug.Log ("Mouse" + Input.mousePosition);
-
-
-
 		// move the head based on the mouse
 		Vector3 hitPoint = GetMouseInWorldPoint();
 		transform.position = hitPoint + heldOffset;

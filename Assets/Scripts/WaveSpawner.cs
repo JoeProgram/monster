@@ -68,7 +68,7 @@ public class WaveSpawner : MonoBehaviour {
 	}
 
 	void SpawnSoldier(){
-		Soldier s = Instantiate (soldierPrefab, GetRandomSpawnPosition(), Quaternion.identity) as Soldier;
+		Soldier s = Instantiate (soldierPrefab, GetRandomSpawnPosition() + Vector3.right * Random.Range(0,10.0f) + Vector3.back * Random.Range(0,10.0f), Quaternion.identity) as Soldier;
 	}
 
 	protected Vector3 GetRandomSpawnPosition(){

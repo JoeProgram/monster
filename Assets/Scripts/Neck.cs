@@ -14,12 +14,17 @@ public class Neck : MonoBehaviour {
 
 	public float neckRaiseFactor;
 
+	public float scalePerSection;  // make neck sections a little bigger as they go from root to head
+
 	// Use this for initialization
 	void Start () {
 
 		// create the neck pieces
 		for( int i = 0; i < neckPieceCount; i++){
-			neckPieces.Add( Instantiate( neckPiecePrefab ) as GameObject  );
+			GameObject piece = Instantiate( neckPiecePrefab ) as GameObject;
+			piece.transform.localScale += Vector3.one * i * scalePerSection;
+			neckPieces.Add( piece );
+
 		}
 
 	}

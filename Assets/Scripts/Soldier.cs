@@ -34,6 +34,7 @@ public class Soldier : MonoBehaviour {
 	}
 
 	protected void Die(){
+		ScoreKeeper.instance.AddScore (1);
 		WaveSpawner.instance.HumanKilled ();
 		Destroy (gameObject);
 	}
