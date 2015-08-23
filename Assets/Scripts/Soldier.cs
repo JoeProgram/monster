@@ -2,7 +2,7 @@
 using System.Collections;
 using DG.Tweening;
 
-public class Soldier : MonoBehaviour {
+public class Soldier : Human {
 
 	public enum SoldierState { WALKING, ATTACKING };
 	public SoldierState soldierState = SoldierState.WALKING;
@@ -11,12 +11,13 @@ public class Soldier : MonoBehaviour {
 	public float jumpForce;
 	public float minJumpUp = 100;
 
-	protected int health;
 	protected NavMeshAgent agent;
 	
 	protected Collider target;
 
 	public GameObject sword;
+
+	public AudioClip sfxJump;
 
 	protected Tween swordTween;
 
@@ -46,7 +47,7 @@ public class Soldier : MonoBehaviour {
 
 		if (collision.gameObject.CompareTag ("hydra") && collision.gameObject.transform.parent.GetComponent<Head> ().IsBiting ()) {
 			GetHurt ();
-		} else if (collision.gameObject.CompareTag ("hydra") && soldierState == SoldierState.ATTACKING) {
+		} else if (collision.gameObject.CompareTag ("hydra") && collision.collider == target && soldierState == SoldierState.ATTACKING) {
 			collision.gameObject.GetComponentInParent<Head>().Hurt();
 		}
 
@@ -63,7 +64,11 @@ public class Soldier : MonoBehaviour {
 	}
 
 	protected IEnumerator AttackJump(){
+
+		// wait a frame to make sure the agent is disabled
 		yield return null;
+
+		AudioSource.PlayClipAtPoint (sfxJump, Vector3.zero);
 		GetComponent<Rigidbody> ().AddForce((target.transform.position - transform.position).normalized * jumpForce + Vector3.up * minJumpUp);
 	}
 
@@ -72,16 +77,7 @@ public class Soldier : MonoBehaviour {
 		agent.enabled = true;
 	}
 
-	protected void GetHurt(){
-		health -= 1;
-		if (health <= 0) {
-			Die();
-		}
-	}
 
-	protected void Die(){
-		ScoreKeeper.instance.AddScore (1);
-		WaveSpawner.instance.HumanKilled ();
-		Destroy (gameObject);
-	}
+
+
 }

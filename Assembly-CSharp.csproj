@@ -51,6 +51,7 @@
      <Compile Include="Assets\Scripts\Head.cs" />
      <Compile Include="Assets\Scripts\HeadGeometry.cs" />
      <Compile Include="Assets\Scripts\HeadPlane.cs" />
+     <Compile Include="Assets\Scripts\Human.cs" />
      <Compile Include="Assets\Scripts\Hydra.cs" />
      <Compile Include="Assets\Scripts\Intro.cs" />
      <Compile Include="Assets\Scripts\KeyManager.cs" />

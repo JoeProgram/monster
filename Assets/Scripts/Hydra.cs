@@ -6,6 +6,8 @@ public class Hydra : MonoBehaviour {
 
 	public List<Collider> bodyParts;
 
+	public List<AudioClip> biteSounds;
+
 	private static Hydra _instance;
 	public static Hydra instance{
 		
@@ -25,6 +27,13 @@ public class Hydra : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 	
+		if (Input.GetMouseButtonDown (1)) {
+			PlayBiteSound();
+		}
+	}
+
+	public void PlayBiteSound(){
+		AudioSource.PlayClipAtPoint (biteSounds [Random.Range (0, biteSounds.Count)], Vector3.zero);
 	}
 
 	public void AddBodyPart(Collider c){

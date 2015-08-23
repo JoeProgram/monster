@@ -39,6 +39,8 @@ public class Head : MonoBehaviour {
 	public float deadHeadSidewaysForce;
 	public float deadHeadUpForce;
 
+	public AudioClip sfxHurt;
+
 	Color ogColor; // original Color
 
 	// Use this for initialization
@@ -160,6 +162,9 @@ public class Head : MonoBehaviour {
 	}
 
 	public void Hurt(){
+
+		AudioSource.PlayClipAtPoint (sfxHurt, Vector3.zero);
+
 		health --;
 
 		geometry.GetComponent<Renderer> ().material.color = Color.red;
