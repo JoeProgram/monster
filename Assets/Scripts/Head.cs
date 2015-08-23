@@ -35,7 +35,7 @@ public class Head : MonoBehaviour {
 	public GameObject features;
 
 	public Texture2D keyUI;
-
+	public float neckGrowTime;
 
 
 	public AudioClip sfxHurt;
@@ -209,10 +209,35 @@ public class Head : MonoBehaviour {
 			growth.transform.rotation = transform.rotation;
 			growth.transform.RotateAround( growth.transform.position, Vector3.up, 60 + -60 * i);
 
-			// add the new head to the body parts list
-			Hydra.instance.AddBodyPart(growth.transform.GetChild(0).GetComponent<Head>().collider); 
+			Transform child = growth.transform.GetChild(0).GetChild(0);
+
+			child.GetComponent<Collider>().enabled = false;
+			child.gameObject.SetActive( false );
+
+			StartCoroutine (GrowHeadAnimation (growth));
+			 
 		}
+
 	
+	}
+
+	protected IEnumerator GrowHeadAnimation( GameObject growth ){
+
+		yield return new WaitForSeconds (neckGrowTime);
+
+		Transform child = growth.transform.GetChild(0).GetChild(0);
+
+		Vector3 scale = child.transform.lossyScale;
+		child.gameObject.transform.localScale = Vector3.zero;
+		child.gameObject.transform.DOScale ( scale, 1 );
+		child.gameObject.SetActive( true );
+		yield return new WaitForSeconds (1);
+
+		child.GetComponent<Collider>().enabled = true;
+
+		// add the new head to the body parts list
+		Hydra.instance.AddBodyPart(growth.transform.GetChild(0).GetComponent<Head>().collider);
+
 	}
 
 	protected void OnDrawGizmos(){

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 
 public class Neck : MonoBehaviour {
 
@@ -15,6 +16,8 @@ public class Neck : MonoBehaviour {
 	public float neckRaiseFactor;
 
 	public float scalePerSection;  // make neck sections a little bigger as they go from root to head
+	public float timeBetweenNeckPieces;
+	public float neckPieceTimeIn;
 
 	// Use this for initialization
 	void Start () {
@@ -24,10 +27,26 @@ public class Neck : MonoBehaviour {
 			GameObject piece = Instantiate( neckPiecePrefab ) as GameObject;
 			piece.transform.localScale += Vector3.one * i * scalePerSection;
 			piece.transform.parent = Hydra.instance.transform;
+			piece.gameObject.SetActive(false);
 			neckPieces.Add( piece );
-
 		}
 
+		StartCoroutine(AnimateNeckGrowth());
+
+	}
+
+	protected IEnumerator AnimateNeckGrowth(){
+
+		for(int i = neckPieces.Count - 1; i >= 0; i--){
+
+			neckPieces[i].transform.DOPunchScale( Vector3.one, 1, 1, 0  );
+			//neckPieces[i].transform.DOPunchScale( neckPieces[i].transform.localScale, neckPieceTimeIn, 1, 0  ); 
+			neckPieces[i].SetActive( true );
+
+			yield return new WaitForSeconds( timeBetweenNeckPieces );
+		}
+
+		yield return null;
 	}
 
 	// Update is called once per frame
