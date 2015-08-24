@@ -6,6 +6,7 @@ using DG.Tweening;
 public class Intro : MonoBehaviour {
 
 	public Text titleLabel;
+	public Text creditsLabel;
 	public Text scoreLabel;
 	protected Color scoreLabelColor;
 
@@ -36,6 +37,8 @@ public class Intro : MonoBehaviour {
 
 	public AudioClip sfxGrowl;
 
+	public AudioSource music;
+
 
 
 	void Awake(){
@@ -46,6 +49,8 @@ public class Intro : MonoBehaviour {
 
 		scoreLabelColor = scoreLabel.color;
 		scoreLabel.color = new Color (scoreLabelColor.r, scoreLabelColor.g, scoreLabelColor.b, 0);
+
+		DOTween.ToAlpha (() => creditsLabel.color, x => creditsLabel.color = x, 0, 0);
 
 		DOTween.ToAlpha (() => healthLabel.color, x => healthLabel.color = x, 0, 0);
 		DOTween.ToAlpha (() => healthFill.color, x => healthFill.color = x, 0, 0);
@@ -74,7 +79,9 @@ public class Intro : MonoBehaviour {
 
 		Color titleLabelColor = new Color (titleLabel.color.r, titleLabel.color.g, titleLabel.color.b, 1);
 		titleLabel.DOColor(titleLabelColor, 3f);
-		yield return new WaitForSeconds (3f);
+		yield return new WaitForSeconds (1);
+		DOTween.ToAlpha (() => creditsLabel.color, x => creditsLabel.color = x, 1, 2);
+		yield return new WaitForSeconds (2f);
 
 
 		hydra.transform.DOMove( hydraEndPos, 5);
@@ -83,6 +90,7 @@ public class Intro : MonoBehaviour {
 
 		titleLabelColor = new Color (titleLabel.color.r, titleLabel.color.g, titleLabel.color.b, 0);
 		titleLabel.DOColor(titleLabelColor, 1f);
+		DOTween.ToAlpha (() => creditsLabel.color, x => creditsLabel.color = x, 0, 0);
 		yield return new WaitForSeconds (1f);
 
 
@@ -128,7 +136,7 @@ public class Intro : MonoBehaviour {
 			yield return null;
 		}
 
-
+		music.Play ();
 
 		DOTween.ToAlpha (() => rightClickMouse.color, x => rightClickMouse.color = x, 0, 0.5f);
 		DOTween.ToAlpha (() => instructions.color, x => instructions.color = x, 0, 0.5f);

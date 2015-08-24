@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 
 public class Head : MonoBehaviour {
@@ -15,6 +16,7 @@ public class Head : MonoBehaviour {
 	public HeadGeometry geometry;
 
 	public int health;
+
 
 	public bool limitAngle;
 	public float maxAngle;
@@ -41,6 +43,9 @@ public class Head : MonoBehaviour {
 
 	public AudioClip sfxHurt;
 	public AudioClip sfxGrowHead;
+
+	public bool showTutorialSelectors;
+	public GameObject tutorialSelectorPrefab;
 
 	Color ogColor; // original Color
 
@@ -267,6 +272,11 @@ public class Head : MonoBehaviour {
 			 
 		}
 
+		if (showTutorialSelectors) {
+			showTutorialSelectors = false;
+			StartCoroutine (GrowTutorial ());
+		}
+
 	
 	}
 
@@ -289,6 +299,27 @@ public class Head : MonoBehaviour {
 
 		// very sloppy on my part.  Running low on time!
 		growth.transform.GetChild(0).GetComponent<Head>().headState = HeadState.HEAD;
+
+	}
+
+	// should be moved.  Last 10 minutes!
+	protected IEnumerator GrowTutorial(){
+		yield return new WaitForSeconds (neckGrowTime + 3);
+
+		List<GameObject> selectors = new List<GameObject> ();
+
+		foreach(Head head in FindObjectsOfType<Head>() ){
+			GameObject selector = Instantiate(tutorialSelectorPrefab, head.transform.position, head.transform.rotation) as GameObject;
+			selector.transform.parent = head.transform;
+			selector.transform.DOLocalRotate (new Vector3(0,0,360), 1, RotateMode.LocalAxisAdd).SetLoops (-1,LoopType.Incremental);
+			selectors.Add( selector );
+		}
+
+		yield return new WaitForSeconds (5);
+
+		for(int i = selectors.Count - 1; i >=  0; i-- ) {
+			Destroy( selectors[i].gameObject );
+		}
 
 	}
 

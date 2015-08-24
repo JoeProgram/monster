@@ -1,18 +1,15 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\WaveSpawner.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Plugins\GoogleAnalyticsV3\Editor\RangedTooltipDrawer.js">
     <Files>
-      <File FileName="Assets\Scripts\Neck.cs" Line="45" Column="1" />
-      <File FileName="Assets\Scripts\Intro.cs" Line="33" Column="18" />
+      <File FileName="Assets\Scripts\WaveSpawner.cs" Line="52" Column="4" />
+      <File FileName="Assets\Scripts\Head.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\HeadGeometry.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Hydra.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Soldier.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Human.cs" Line="30" Column="29" />
-      <File FileName="Assets\Scripts\Head.cs" Line="83" Column="89" />
-      <File FileName="Assets\Scripts\WaveSpawner.cs" Line="45" Column="25" />
-      <File FileName="Assets\Scripts\Setup.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Ending.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\TestPunch.cs" Line="19" Column="34" />
-      <File FileName="Assets\Scripts\HeadGeometry.cs" Line="18" Column="1" />
+      <File FileName="Assets\Scripts\Intro.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ScoreKeeper.cs" Line="20" Column="23" />
+      <File FileName="Assets\Scripts\Metrics.cs" Line="1" Column="1" />
+      <File FileName="Assets\Plugins\GoogleAnalyticsV3\Editor\RangedTooltipDrawer.js" Line="12" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
