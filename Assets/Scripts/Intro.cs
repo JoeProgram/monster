@@ -75,7 +75,7 @@ public class Intro : MonoBehaviour {
 
 		yield return new WaitForSeconds (1.5f);
 
-		AudioSource.PlayClipAtPoint(sfxGrowl, Vector3.zero);
+		AudioSource.PlayClipAtPoint(sfxGrowl, Camera.main.transform.position);
 
 		Color titleLabelColor = new Color (titleLabel.color.r, titleLabel.color.g, titleLabel.color.b, 1);
 		titleLabel.DOColor(titleLabelColor, 3f);

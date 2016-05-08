@@ -78,7 +78,7 @@ public class Soldier : Human {
 		// wait a frame to make sure the agent is disabled
 		yield return null;
 
-		AudioSource.PlayClipAtPoint (sfxJump, Vector3.zero);
+		AudioSource.PlayClipAtPoint (sfxJump, Camera.main.transform.position);
 		GetComponent<Rigidbody> ().AddForce((target.transform.position - transform.position).normalized * jumpForce + Vector3.up * minJumpUp);
 	}
 

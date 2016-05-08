@@ -29,7 +29,7 @@ public class Human : MonoBehaviour {
 
 	protected virtual void Die(){
 
-		AudioSource.PlayClipAtPoint (sfxEaten, Vector3.zero);
+		AudioSource.PlayClipAtPoint (sfxEaten, Camera.main.transform.position);
 
 		ScoreKeeper.instance.AddScore (1);
 		Hydra.instance.Heal (nutrition);

@@ -50,7 +50,7 @@ public class Hydra : MonoBehaviour {
 
 	public void PlayBiteSound(){
 		if (state == HydraState.ALIVE) {
-			AudioSource.PlayClipAtPoint (biteSounds [Random.Range (0, biteSounds.Count)], Vector3.zero);
+			AudioSource.PlayClipAtPoint (biteSounds [Random.Range (0, biteSounds.Count)],Camera.main.transform.position);
 		}
 	}
 
@@ -84,7 +84,7 @@ public class Hydra : MonoBehaviour {
 	protected void Die(){
 		state = HydraState.DEAD;
 
-		AudioSource.PlayClipAtPoint (sfxDeath, Vector3.zero);
+		AudioSource.PlayClipAtPoint (sfxDeath, Camera.main.transform.position);
 
 		foreach (Renderer r in GetComponentsInChildren<Renderer>()) {
 			r.material = deadMaterial;

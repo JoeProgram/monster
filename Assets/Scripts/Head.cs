@@ -214,7 +214,7 @@ public class Head : MonoBehaviour {
 
 	public void Hurt(){
 
-		AudioSource.PlayClipAtPoint (sfxHurt, Vector3.zero);
+		AudioSource.PlayClipAtPoint (sfxHurt, Camera.main.transform.position);
 
 		health --;
 		Hydra.instance.Hurt ();
@@ -252,7 +252,7 @@ public class Head : MonoBehaviour {
 
 	public void Grow(){
 
-		AudioSource.PlayClipAtPoint (sfxGrowHead, Vector3.zero);
+		AudioSource.PlayClipAtPoint (sfxGrowHead, Camera.main.transform.position);
 
 		for( int i = 0; i < 2; i++ ){
 

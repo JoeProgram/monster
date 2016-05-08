@@ -7,4 +7,12 @@ public class Setup : MonoBehaviour {
 		Application.LoadLevel (Application.loadedLevel);
 	}
 
+	void Update(){
+		if (Input.GetKeyDown (KeyCode.Escape)) {
+			Application.Quit ();
+		} else if (Input.GetKeyDown (KeyCode.R)) {
+			Restart();
+		}
+	}
+
 }
